@@ -2,6 +2,9 @@ import matplotlib.pyplot as plotter
 from matplotlib.patches import Polygon
 import numpy as np
 
+#############################################
+###########         TASK 1        ###########
+#############################################
 
 ''' Target functions '''
 
@@ -36,11 +39,11 @@ all_interval = np.linspace(x_lbound, x_rbound, (x_rbound - x_lbound) / step)
 
 
 def min_f(x):
-    return min(f1(x) / f1_star, f2(x) / f2_star)
+    return min(f1_star / f1(x), f2(x) / f2_star)
 
 
 def max_f(x):
-    return max(f1(x) / f1_star, f2(x) / f2_star)
+    return max(f1_star / f1(x), f2(x) / f2_star)
 
 
 def maxmin(space):
@@ -58,10 +61,10 @@ def minmax(space):
     f0 = max_f(space[0])
     x0 = space[0]
     for i in range(len(space) - 1):
-        print("x = %.3f" % space[i], "f1/f1' = %.3f" % (f1(space[i]) / f1_star), sep='\t', end='\t')
-        print("f2/f2' = %.3f" % (f2(space[i]) / f2_star), end='\t')
-        print("max = %.3f" % max_f(space[i]), end='\t')
-        print("min = %.3f" % min_f(space[i]))
+        print("x = %.3f" % space[i], "f1'/f1 = %.4f" % (f1_star / f1(space[i])), sep='\t', end='\t')
+        print("f2/f2' = %.4f" % (f2(space[i]) / f2_star), end='\t')
+        print("max = %.4f" % max_f(space[i]), end='\t')
+        print("min = %.4f" % min_f(space[i]))
         if max_f(space[i]) <= f0:
             f0 = max_f(space[i])
             x0 = space[i]
@@ -74,7 +77,7 @@ def minmax_maxmin_region():
     min_delta, x_l = minmax(space)
     max_delta, x_r = maxmin(space)
     if x_r == x_l:
-        x_r += step
+        x_r += step / 4
     return np.linspace(min(x_l, x_r), max(x_l, x_r), abs(x_r - x_l) / step), min(x_l, x_r), max(x_l, x_r)
 
 
@@ -98,7 +101,7 @@ def pareto_region():
 ''' MAIN '''
 
 
-def main():
+def task_1():
     fig, ax = plotter.subplots()
     f1_plot, = plotter.plot(all_interval, f1(all_interval))
     f2_plot, = plotter.plot(all_interval, f2(all_interval))
@@ -140,7 +143,37 @@ def main():
     plotter.show()
 
 
+#############################################
+###########         TASK 2        ###########
+#############################################
+
+
+''' Target functions '''
+
+
+def f12(x1, x2):
+    return 3 * x1 ** 2 + 4 * x2 ** 2 + 5 * x1 * x2
+
+
+def f21(x1, x2):
+    return 0.8 * x2 + x1 * x2 - 0.4 * x1 + 1
+
+
+''' Target constants '''
+
+
+x1_lbound = 0.0
+x1_rbound = 4.0
+x2_lbound = 0.0
+x2_rbound = 3.0
+step_2 = 0.01
+x1_interval = np.linspace(x1_lbound, x1_rbound, (x1_rbound - x1_lbound) / step_2)
+x2_interval = np.linspace(x2_lbound, x2_rbound, (x2_rbound - x2_lbound) / step_2)
+
+
+def task_2():
+    print()
 
 ''' LAUNCHER '''
 
-main()
+task_1()
