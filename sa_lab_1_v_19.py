@@ -243,39 +243,33 @@ def pareto_region_2(f12_lim, f21_lim):
 ''' x1, x2 optimal '''
 
 
-def min_delta_12(f12_star):
-    delta = abs(f12(x1_lbound, x2_lbound) - f12_star)
-    delta_x1 = x1_lbound
-    delta_x2 = x2_lbound
-    ix1 = x1_lbound
-    while ix1 <= x1_rbound:
-        ix2 = x2_lbound
-        while ix2 <= x2_rbound:
-            new_val = abs(f12(ix1, ix2) - f12_star)
-            if delta > new_val:
+def min_delta_12(f12_star, region):
+    delta = abs(f12(region[0][0], region[0][1]) - f12_star)
+    delta_x1 = region[0][0]
+    delta_x2 = region[0][1]
+    i = 1
+    while i < len(region):
+        new_val = abs(f12(region[i][0], region[i][1]) - f12_star)
+        if delta > new_val:
                 delta = new_val
-                delta_x1 = ix1
-                delta_x2 = ix2
-            ix2 += step_2
-        ix1 += step_2
+                delta_x1 = region[i][0]
+                delta_x2 = region[i][1]
+        i += 1
     return delta, delta_x1, delta_x2
 
 
-def min_delta_21(f21_star):
-    delta = abs(f21(x1_lbound, x2_lbound) - f21_star)
-    delta_x1 = x1_lbound
-    delta_x2 = x2_lbound
-    ix1 = x1_lbound
-    while ix1 <= x1_rbound:
-        ix2 = x2_lbound
-        while ix2 <= x2_rbound:
-            new_val = abs(f21(ix1, ix2) - f21_star)
-            if delta > new_val:
+def min_delta_21(f21_star, region):
+    delta = abs(f21(region[0][0], region[0][1]) - f21_star)
+    delta_x1 = region[0][0]
+    delta_x2 = region[0][1]
+    i = 1
+    while i < len(region):
+        new_val = abs(f21(region[i][0], region[i][1]) - f21_star)
+        if delta > new_val:
                 delta = new_val
-                delta_x1 = ix1
-                delta_x2 = ix2
-            ix2 += step_2
-        ix1 += step_2
+                delta_x1 = region[i][0]
+                delta_x2 = region[i][1]
+        i += 1
     return delta, delta_x1, delta_x2
 
 
@@ -289,8 +283,8 @@ def task_2():
     print("\nf21' = %.3f" % f21_star, end='\n\n')
     pareto = pareto_region_2(f12_star, f21_star)
 
-    opt12, optx1_12, optx2_12 = min_delta_12(f12_star)
-    opt21, optx1_21, optx2_21 = min_delta_21(f21_star)
+    opt12, optx1_12, optx2_12 = min_delta_12(f12_star, pareto)
+    opt21, optx1_21, optx2_21 = min_delta_21(f21_star, pareto)
     print("Delta[1>2] = %.3f" % opt12, end='\t')
     print("Opt x1 = %.2f" % optx1_12, end='\t')
     print("Opt x2 = %.2f" % optx2_12)
