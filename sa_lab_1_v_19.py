@@ -175,42 +175,18 @@ x2_interval = np.linspace(x2_lbound, x2_rbound, (x2_rbound - x2_lbound) / step_2
 def maxmin12(out=False):
     if out:
         print("x1 \\ x2", end='\t')
-    for i in range(len(x2_interval)):
-        if out:
-            print("x2=%.2f" % x2_interval[i], end='\t')
-    if out:
-        print()
-    max_x1 = f12(x1_lbound, x2_lbound)
-    for j in range(len(x1_interval)):
-        if out:
-            print("x1=%.2f" % x1_interval[j], end='\t')
-        min_x2 = f12(x1_interval[j], x2_lbound)
-        for i in range(len(x2_interval)):
-            f_val = f12(x1_interval[j], x2_interval[i])
-            min_x2 = min(min_x2, f_val)
-            if out:
-                print("%.3f" % f_val, end='\t')
-        max_x1 = max(max_x1, min_x2)
-        if out:
-            print()
-    return max_x1
-
-
-def maxmin21(out=False):
-    if out:
-        print("x2 \\ x1", end='\t')
     for i in range(len(x1_interval)):
         if out:
             print("x1=%.2f" % x1_interval[i], end='\t')
     if out:
         print()
-    max_x2 = f21(x1_lbound, x2_lbound)
+    max_x2 = f12(x1_lbound, x2_lbound)
     for j in range(len(x2_interval)):
         if out:
             print("x2=%.2f" % x2_interval[j], end='\t')
-        min_x1 = f21(x1_lbound, x2_interval[j])
+        min_x1 = f12(x1_lbound, x2_interval[j])
         for i in range(len(x1_interval)):
-            f_val = f21(x1_interval[i], x2_interval[j])
+            f_val = f12(x1_interval[i], x2_interval[j])
             min_x1 = min(min_x1, f_val)
             if out:
                 print("%.3f" % f_val, end='\t')
@@ -218,6 +194,30 @@ def maxmin21(out=False):
         if out:
             print()
     return max_x2
+
+
+def maxmin21(out=False):
+    if out:
+        print("x2 \\ x1", end='\t')
+    for i in range(len(x2_interval)):
+        if out:
+            print("x2=%.2f" % x2_interval[i], end='\t')
+    if out:
+        print()
+    max_x1 = f21(x1_lbound, x2_lbound)
+    for j in range(len(x1_interval)):
+        if out:
+            print("x2=%.2f" % x1_interval[j], end='\t')
+        min_x2 = f21(x1_interval[j], x2_lbound)
+        for i in range(len(x2_interval)):
+            f_val = f21(x1_interval[j], x2_interval[i])
+            min_x2 = min(min_x2, f_val)
+            if out:
+                print("%.3f" % f_val, end='\t')
+        max_x1 = max(max_x1, min_x2)
+        if out:
+            print()
+    return max_x1
 
 
 ''' Pareto region searching '''
@@ -292,7 +292,7 @@ def task_2():
     print("Opt x1 = %.2f" % optx1_21, end='\t')
     print("Opt x2 = %.2f" % optx2_21)
 
-    plot_print_increment = 5
+    plot_print_increment = 10
     print("Gonna print %i dots. " % (len(pareto) / plot_print_increment), end='')
     if input("Continue? [y/n]: ") == "y":
         i = 0
